@@ -48,6 +48,10 @@ Created 11/5/1995 Heikki Tuuri
 #include "srv0start.h"
 #include "srv0srv.h"
 
+#ifdef UNIV_TPCC_MONITOR
+#include "tpcc0mon.h"
+#endif /*UNIV_TPCC_MONITOR*/
+
 /** There must be at least this many pages in buf_pool in the area to start
 a random read-ahead */
 #define BUF_READ_AHEAD_RANDOM_THRESHOLD(b)	\
@@ -197,6 +201,10 @@ buf_read_page_low(
 	);
 
 	IORequest	request(type | IORequest::READ);
+
+#ifdef UNIV_TPCC_MONITOR
+	tpcc_add_disk_rd(page_id.space());
+#endif /*UNIV_TPCC_MONITOR*/
 
 	*err = fil_io(
 		request, sync, page_id, page_size, 0, page_size.physical(),

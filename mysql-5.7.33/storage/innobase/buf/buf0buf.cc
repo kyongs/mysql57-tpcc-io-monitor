@@ -83,9 +83,15 @@ Created 11/5/1995 Heikki Tuuri
 
 my_bool  srv_numa_interleave = FALSE;
 
+#ifdef UNIV_TPCC_MONITOR
+#include "tpcc0mon.h"
+#endif /*UNIV_TPCC_MONITOR*/
+
 #ifdef HAVE_LIBNUMA
 #include <numa.h>
 #include <numaif.h>
+
+
 
 struct set_numa_interleave_t
 {
@@ -4178,6 +4184,9 @@ loop:
 		goto loop;
 	} else {
 		fix_block = block;
+#ifdef UNIV_TPCC_MONITOR
+		tpcc_add_buf_rd(page_id.space());
+#endif /*UNIV_TPCC_MONITOR*/
 	}
 
 	if (fsp_is_system_temporary(page_id.space())) {

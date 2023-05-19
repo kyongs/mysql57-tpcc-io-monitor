@@ -143,6 +143,71 @@ struct srv_stats_t {
 
 	/** Number of rows inserted */
 	ulint_ctr_64_t		n_rows_inserted;
+
+#ifdef UNIV_TPCC_MONITOR
+	/* total tpcc statistics*/
+	ulint_ctr_1_t tpcc_disk_rd;
+	ulint_ctr_1_t tpcc_buf_rd;
+	ulint_ctr_1_t tpcc_lru_wr;
+	ulint_ctr_1_t tpcc_sp_wr;
+	ulint_ctr_1_t tpcc_cp_wr;
+
+	/* tpcc disk read (buffer miss) */
+	ulint_ctr_1_t tpcc_wh_disk_rd;
+	ulint_ctr_1_t tpcc_dist_disk_rd;
+	ulint_ctr_1_t tpcc_cust_disk_rd;
+	ulint_ctr_1_t tpcc_stk_disk_rd;
+	ulint_ctr_1_t tpcc_itm_disk_rd;
+	ulint_ctr_1_t tpcc_or_disk_rd;
+	ulint_ctr_1_t tpcc_no_disk_rd;
+	ulint_ctr_1_t tpcc_ol_disk_rd;
+	ulint_ctr_1_t tpcc_his_disk_rd;
+
+	/* tpcc buffer read (buffer hit) */
+	ulint_ctr_1_t tpcc_wh_buf_rd;
+	ulint_ctr_1_t tpcc_dist_buf_rd;
+	ulint_ctr_1_t tpcc_cust_buf_rd;
+	ulint_ctr_1_t tpcc_stk_buf_rd;
+	ulint_ctr_1_t tpcc_itm_buf_rd;
+	ulint_ctr_1_t tpcc_or_buf_rd;
+	ulint_ctr_1_t tpcc_no_buf_rd;
+	ulint_ctr_1_t tpcc_ol_buf_rd;
+	ulint_ctr_1_t tpcc_his_buf_rd;
+
+	//tpcc lru flush
+	ulint_ctr_1_t tpcc_cust_lru_wr;
+	ulint_ctr_1_t tpcc_dist_lru_wr;
+	ulint_ctr_1_t tpcc_his_lru_wr;
+	ulint_ctr_1_t tpcc_itm_lru_wr;
+	ulint_ctr_1_t tpcc_no_lru_wr;
+	ulint_ctr_1_t tpcc_ol_lru_wr;
+	ulint_ctr_1_t tpcc_or_lru_wr;
+	ulint_ctr_1_t tpcc_stk_lru_wr;
+	ulint_ctr_1_t tpcc_wh_lru_wr;
+
+	//tpcc checkpoint flush
+	ulint_ctr_1_t tpcc_cust_cp_wr;
+	ulint_ctr_1_t tpcc_dist_cp_wr;
+	ulint_ctr_1_t tpcc_his_cp_wr;
+	ulint_ctr_1_t tpcc_itm_cp_wr;
+	ulint_ctr_1_t tpcc_no_cp_wr;
+	ulint_ctr_1_t tpcc_ol_cp_wr;
+	ulint_ctr_1_t tpcc_or_cp_wr;
+	ulint_ctr_1_t tpcc_stk_cp_wr;
+	ulint_ctr_1_t tpcc_wh_cp_wr;
+
+	//tpcc single page flush
+	ulint_ctr_1_t tpcc_cust_sp_wr;
+	ulint_ctr_1_t tpcc_dist_sp_wr;
+	ulint_ctr_1_t tpcc_his_sp_wr;
+	ulint_ctr_1_t tpcc_itm_sp_wr;
+	ulint_ctr_1_t tpcc_no_sp_wr;
+	ulint_ctr_1_t tpcc_ol_sp_wr;
+	ulint_ctr_1_t tpcc_or_sp_wr;
+	ulint_ctr_1_t tpcc_stk_sp_wr;
+	ulint_ctr_1_t tpcc_wh_sp_wr;
+
+#endif /*UNIV_TPCC_MONITOR*/
 };
 
 extern const char*	srv_main_thread_op_info;
@@ -392,6 +457,18 @@ extern my_bool			srv_stats_persistent;
 extern unsigned long long	srv_stats_persistent_sample_pages;
 extern my_bool			srv_stats_auto_recalc;
 extern my_bool			srv_stats_include_delete_marked;
+
+#ifdef UNIV_TPCC_MONITOR
+extern ulint    srv_ol_space_id;
+extern ulint    srv_no_space_id;
+extern ulint    srv_stk_space_id;
+extern ulint    srv_cust_space_id;
+extern ulint    srv_or_space_id;
+extern ulint    srv_dist_space_id;
+extern ulint    srv_wh_space_id;
+extern ulint    srv_itm_space_id;
+extern ulint    srv_his_space_id;
+#endif /*UNIV_TPCC_MONITOR*/
 
 extern ibool	srv_use_doublewrite_buf;
 extern ulong	srv_doublewrite_batch_size;
@@ -942,6 +1019,71 @@ struct export_var_t{
 						index lookups when freeing
 						file pages */
 #endif /* UNIV_DEBUG */
+#ifdef UNIV_TPCC_MONITOR
+	/* total tpcc statistics*/
+	ulint tpcc_disk_rd;
+	ulint tpcc_buf_rd;
+	ulint tpcc_lru_wr;
+	ulint tpcc_sp_wr;
+	ulint tpcc_cp_wr;
+	
+	/* tpcc disk read (buffer miss) */
+	ulint tpcc_wh_disk_rd;
+	ulint tpcc_dist_disk_rd;
+	ulint tpcc_cust_disk_rd;
+	ulint tpcc_stk_disk_rd;
+	ulint tpcc_itm_disk_rd;
+	ulint tpcc_or_disk_rd;
+	ulint tpcc_no_disk_rd;
+	ulint tpcc_ol_disk_rd;
+	ulint tpcc_his_disk_rd;
+
+	/* tpcc buffer read (buffer hit) */
+	ulint tpcc_wh_buf_rd;
+	ulint tpcc_dist_buf_rd;
+	ulint tpcc_cust_buf_rd;
+	ulint tpcc_stk_buf_rd;
+	ulint tpcc_itm_buf_rd;
+	ulint tpcc_or_buf_rd;
+	ulint tpcc_no_buf_rd;
+	ulint tpcc_ol_buf_rd;
+	ulint tpcc_his_buf_rd;
+
+	//tpcc lru flush
+	ulint tpcc_cust_lru_wr;
+	ulint tpcc_dist_lru_wr;
+	ulint tpcc_his_lru_wr;
+	ulint tpcc_itm_lru_wr;
+	ulint tpcc_no_lru_wr;
+	ulint tpcc_ol_lru_wr;
+	ulint tpcc_or_lru_wr;
+	ulint tpcc_stk_lru_wr;
+	ulint tpcc_wh_lru_wr;
+
+	//tpcc checkpoint flush
+	ulint tpcc_cust_cp_wr;
+	ulint tpcc_dist_cp_wr;
+	ulint tpcc_his_cp_wr;
+	ulint tpcc_itm_cp_wr;
+	ulint tpcc_no_cp_wr;
+	ulint tpcc_ol_cp_wr;
+	ulint tpcc_or_cp_wr;
+	ulint tpcc_stk_cp_wr;
+	ulint tpcc_wh_cp_wr;
+
+	//tpcc single page flush
+	ulint tpcc_cust_sp_wr;
+	ulint tpcc_dist_sp_wr;
+	ulint tpcc_his_sp_wr;
+	ulint tpcc_itm_sp_wr;
+	ulint tpcc_no_sp_wr;
+	ulint tpcc_ol_sp_wr;
+	ulint tpcc_or_sp_wr;
+	ulint tpcc_stk_sp_wr;
+	ulint tpcc_wh_sp_wr;
+
+#endif /*UNIV_TPCC_MONITOR*/
+
 };
 
 /** Thread slot in the thread table.  */

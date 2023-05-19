@@ -69,6 +69,10 @@ Created 11/11/1995 Heikki Tuuri
 static const int buf_flush_page_cleaner_priority = -20;
 #endif /* UNIV_LINUX */
 
+#ifdef UNIV_TPCC_MONITOR
+#include "tpcc0mon.h"
+#endif /*UNIV_TPCC_MONITOR*/
+
 /** Sleep time in microseconds for loop waiting for the oldest
 modification lsn */
 static const ulint buf_flush_wait_flushed_sleep_time = 10000;
@@ -1079,6 +1083,18 @@ buf_flush_write_block_low(
 			fsp_is_checksum_disabled(bpage->id.space()));
 		break;
 	}
+
+#ifdef UNIV_TPCC_MONITOR
+	if(flush_type == BUF_FLUSH_LRU){
+		srv_stats.tpcc_lru_wr.inc();
+	} else if (flush_type == BUF_FLUSH_LIST){
+		srv_stats.tpcc_cp_wr.inc();
+	} else if (flush_type == BUF_FLUSH_SINGLE_PAGE) {
+		srv_stats.tpcc_sp_wr.inc();
+	}
+	
+	tpcc_add_write_type(bpage->id.space(), flush_type); 
+#endif /*UNIV_TPCC_MONITOR*/
 
 	/* Disable use of double-write buffer for temporary tablespace.
 	Given the nature and load of temporary tablespace doublewrite buffer
