@@ -965,7 +965,7 @@ add_size:
 
 	fprintf(stderr, "%s: %lu\n", node->name, space->id);
 #endif /* UNIV_TPCC_MONITOR*/
-  /**/
+
 	return(true);
 }
 

@@ -1080,10 +1080,16 @@ buf_LRU_free_from_common_LRU_list(
 		ut_ad(bpage->in_LRU_list);
 
 		unsigned	accessed = buf_page_is_accessed(bpage);
+#ifdef UNIV_TPCC_MONITOR
+		srv_stats.tpcc_lru_scan.inc();
+#endif /*UNIV_TPCC_MONITOR*/
 
-		if (buf_flush_ready_for_replace(bpage)) {
+		if (buf_flush_ready_for_replace(bpage)) { //lru list에 있으면서 clean page
 			mutex_exit(mutex);
 			freed = buf_LRU_free_page(bpage, true);
+#ifdef UNIV_TPCC_MONITOR
+			bpage->discard_cnt++; // clean page이므로 그냥 discard 
+#endif /*UNIV_TPCC_MONITOR*/
 		} else {
 			mutex_exit(mutex);
 		}
@@ -1333,6 +1339,10 @@ loop:
 	block = buf_LRU_get_free_only(buf_pool);
 
 	if (block != NULL) {
+
+#ifdef UNIV_TPCC_MONITOR
+	srv_stats.tpcc_fpage_list.inc();
+#endif /*UNIV_TPCC_MONITOR*/
 
 		buf_pool_mutex_exit(buf_pool);
 		ut_ad(buf_pool_from_block(block) == buf_pool);

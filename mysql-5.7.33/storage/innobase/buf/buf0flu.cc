@@ -1084,22 +1084,15 @@ buf_flush_write_block_low(
 		break;
 	}
 
-#ifdef UNIV_TPCC_MONITOR
-	if(flush_type == BUF_FLUSH_LRU){
-		srv_stats.tpcc_lru_wr.inc();
-	} else if (flush_type == BUF_FLUSH_LIST){
-		srv_stats.tpcc_cp_wr.inc();
-	} else if (flush_type == BUF_FLUSH_SINGLE_PAGE) {
-		srv_stats.tpcc_sp_wr.inc();
-	}
-	
-	tpcc_add_write_type(bpage->id.space(), flush_type); 
-#endif /*UNIV_TPCC_MONITOR*/
-
 	/* Disable use of double-write buffer for temporary tablespace.
 	Given the nature and load of temporary tablespace doublewrite buffer
 	adds an overhead during flushing. */
 
+#ifdef UNIV_TPCC_MONITOR
+	if(is_tpcc_table(bpage)){
+		tpcc_add_write_type(bpage, flush_type); 
+	}
+#endif /*UNIV_TPCC_MONITOR*/
 	if (!srv_use_doublewrite_buf
 	    || buf_dblwr == NULL
 	    || srv_read_only_mode

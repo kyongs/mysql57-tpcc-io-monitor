@@ -1674,6 +1674,15 @@ public:
 					or buf_block_t::mutex. */
 # endif /* UNIV_DEBUG */
 #endif /* !UNIV_HOTBACKUP */
+#ifdef UNIV_TPCC_MONITOR
+	ulint disk_rd_cnt; /**/
+
+	ulint buf_rd_cnt; /**/
+
+	ulint cp_cnt; /**/
+
+	ulint discard_cnt; /**/
+#endif /*UNIV_TPCC_MONITOR*/
 };
 
 /** The buffer control block structure */

@@ -143,7 +143,7 @@ struct srv_stats_t {
 
 	/** Number of rows inserted */
 	ulint_ctr_64_t		n_rows_inserted;
-
+	
 #ifdef UNIV_TPCC_MONITOR
 	/* total tpcc statistics*/
 	ulint_ctr_1_t tpcc_disk_rd;
@@ -151,6 +151,8 @@ struct srv_stats_t {
 	ulint_ctr_1_t tpcc_lru_wr;
 	ulint_ctr_1_t tpcc_sp_wr;
 	ulint_ctr_1_t tpcc_cp_wr;
+	ulint_ctr_1_t tpcc_fpage_list;
+	ulint_ctr_1_t tpcc_lru_scan;
 
 	/* tpcc disk read (buffer miss) */
 	ulint_ctr_1_t tpcc_wh_disk_rd;
@@ -1026,6 +1028,8 @@ struct export_var_t{
 	ulint tpcc_lru_wr;
 	ulint tpcc_sp_wr;
 	ulint tpcc_cp_wr;
+	ulint tpcc_fpage_list;
+	ulint tpcc_lru_scan;
 	
 	/* tpcc disk read (buffer miss) */
 	ulint tpcc_wh_disk_rd;
@@ -1083,7 +1087,6 @@ struct export_var_t{
 	ulint tpcc_wh_sp_wr;
 
 #endif /*UNIV_TPCC_MONITOR*/
-
 };
 
 /** Thread slot in the thread table.  */

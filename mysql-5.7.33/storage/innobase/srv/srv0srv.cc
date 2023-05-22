@@ -1324,15 +1324,20 @@ srv_printf_innodb_monitor(
 	fputs("---------------------\n"
 		"TPC-C Table I/O Monitoring\n"
 		"---------------------\n", file);
+
 	fprintf(file,
 		"Buffer Read Page:                 " ULINTPF "\n"
 		"Disk Read Page:                   " ULINTPF "\n"
 		"LRU Flush Page:                   " ULINTPF "\n"
 		"CP Flush Page:                    " ULINTPF "\n"
-		"SP Flush Page:                    " ULINTPF "\n",
+		"SP Flush Page:                    " ULINTPF "\n"
+		"Free Page List:                   " ULINTPF "\n"
+		"LRU Scan Page:                    " ULINTPF "\n\n",
 		// "Avg.  Page :             %.2f      \n", 
 		(ulint) srv_stats.tpcc_buf_rd, (ulint) srv_stats.tpcc_disk_rd,
-		(ulint) srv_stats.tpcc_lru_wr, (ulint) srv_stats.tpcc_cp_wr, (ulint) srv_stats.tpcc_sp_wr);
+		(ulint) srv_stats.tpcc_lru_wr, (ulint) srv_stats.tpcc_cp_wr, (ulint) srv_stats.tpcc_sp_wr,
+		(ulint) srv_stats.tpcc_fpage_list, (ulint) srv_stats.tpcc_lru_scan
+	);
 		// (float) (srv_stats.flushlist_page_cnt/srv_stats.flushlist_ckpt_cnt));
 	
 	fputs(

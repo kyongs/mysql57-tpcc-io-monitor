@@ -203,7 +203,9 @@ buf_read_page_low(
 	IORequest	request(type | IORequest::READ);
 
 #ifdef UNIV_TPCC_MONITOR
-	tpcc_add_disk_rd(page_id.space());
+	if (if_tpcc_table(bpage)){
+		tpcc_add_disk_rd(bpage, page_id.space());
+	}
 #endif /*UNIV_TPCC_MONITOR*/
 
 	*err = fil_io(

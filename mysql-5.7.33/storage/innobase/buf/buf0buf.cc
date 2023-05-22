@@ -91,8 +91,6 @@ my_bool  srv_numa_interleave = FALSE;
 #include <numa.h>
 #include <numaif.h>
 
-
-
 struct set_numa_interleave_t
 {
 	set_numa_interleave_t()
@@ -4185,7 +4183,9 @@ loop:
 	} else {
 		fix_block = block;
 #ifdef UNIV_TPCC_MONITOR
-		tpcc_add_buf_rd(page_id.space());
+	if(is_tpcc_table(&block->page)){
+		tpcc_add_buf_rd(block, page_id.space());
+	}
 #endif /*UNIV_TPCC_MONITOR*/
 	}
 
@@ -4957,6 +4957,13 @@ buf_page_init_low(
 	HASH_INVALIDATE(bpage, hash);
 
 	ut_d(bpage->file_page_was_freed = FALSE);
+	
+#ifdef UNIV_TPCC_MONITOR
+	bpage->buf_rd_cnt = 0;
+	bpage->disk_rd_cnt = 0;
+	bpage->cp_cnt = 0;
+	bpage->discard_cnt = 0;
+#endif /*UNIV_TPCC_MONITOR*/
 }
 
 /** Inits a page to the buffer buf_pool.
