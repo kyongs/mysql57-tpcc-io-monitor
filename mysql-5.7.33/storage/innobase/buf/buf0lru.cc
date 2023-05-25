@@ -1086,10 +1086,11 @@ buf_LRU_free_from_common_LRU_list(
 
 		if (buf_flush_ready_for_replace(bpage)) { //lru list에 있으면서 clean page
 			mutex_exit(mutex);
-			freed = buf_LRU_free_page(bpage, true);
 #ifdef UNIV_TPCC_MONITOR
 			bpage->discard_cnt++; // clean page이므로 그냥 discard 
 #endif /*UNIV_TPCC_MONITOR*/
+			freed = buf_LRU_free_page(bpage, true);
+
 		} else {
 			mutex_exit(mutex);
 		}
